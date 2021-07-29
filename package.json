@@ -1,0 +1,17 @@
+{
+  "name": "ws_chat",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^8.0.0"
+  },
+  "scripts": {
+    "start:server": "nodemon --ignore client/",
+    "start:client": "superstatic client --port 3000"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12",
+    "superstatic": "^7.1.0"
+  }
+}

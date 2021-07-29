@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WS Chat Demo</title>
+  </head>
+  <body>
+    <h1>Connection <span id="connection">is closed</span></h1>
+    <div id="messages"></div>
+    <div id="nickname">
+      <input type="text" id="nick-input" placeholder="What is your name?" />
+      <button id="set-nick">Set nick name</button>
+    </div>
+    <div id="chat">
+      <input type="text" id="chat-input" />
+      <button id="send-chat">Send</button>
+    </div>
+
+    <script>
+      let nickname, welcomeMessage, mesageBody;
+
+      const connection = new WebSocket("wss://afec08aa2791.ngrok.io");
+
+      const nickSection = document.getElementById("nickname");
+      const chatSection = document.getElementById("chat");
+      const connectionDisplay = document.getElementById("connection");
+      const messagesDisplay = document.getElementById("messages");
+      const nickInput = document.getElementById("nick-input");
+      const nickButton = document.getElementById("set-nick");
+      const chatInput = document.getElementById("chat-input");
+      const chatButton = document.getElementById("send-chat");
+
+      connection.addEventListener("open", (connection) => {
+        connectionDisplay.innerText = "is open!";
+      });
+
+      connection.addEventListener("message", (incommingMessage) => {
+        let newMessage = document.createElement("div");
+        if (isJson(incommingMessage.data)) {
+          message = JSON.parse(incommingMessage.data);
+          messageBody = `${message.nick}: ${message.message}`;
+        } else {
+          messageBody = `<p>${incommingMessage.data}</p>`;
+        }
+        newMessage.innerText = messageBody;
+        messagesDisplay.appendChild(newMessage);
+      });
+      if (!nickname) {
+        chatSection.style.visibility = "hidden";
+      }
+
+      nickButton.addEventListener("click", () => {
+        nickname = nickInput.value;
+        nickInput.style.visibility = "hidden";
+        nickButton.style.visibility = "hidden";
+        let nickNameDisplay = document.createElement("span");
+        nickNameDisplay.innerText = `Chatting as: ${nickname}`;
+        nickSection.appendChild(nickNameDisplay);
+        chatSection.style.visibility = "";
+      });
+
+      chatButton.addEventListener("click", () => {
+        connection.send(
+          JSON.stringify({ nick: nickname, message: chatInput.value })
+        );
+        chatInput.value = "";
+      });
+
+      function isJson(item) {
+        try {
+          JSON.parse(item);
+          return true;
+        } catch (error) {
+          return false;
+        }
+      }
+    </script>
+  </body>
+</html>
