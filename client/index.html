@@ -21,7 +21,7 @@
     <script>
       let nickname, welcomeMessage, mesageBody;
 
-      const connection = new WebSocket("wss://3201a21afc10.ngrok.io");
+      const connection = new WebSocket("wss://9af4375c1960.ngrok.io");
 
       const nickSection = document.getElementById("nickname");
       const chatSection = document.getElementById("chat");
@@ -42,9 +42,9 @@
           message = JSON.parse(incommingMessage.data);
           messageBody = `${message.nick}: ${message.message}`;
         } else {
-          messageBody = `<p>${incommingMessage.data}</p>`;
+          messageBody = `${incommingMessage.data}`;
         }
-        newMessage.innerHTML = messageBody;
+        newMessage.innerText = messageBody;
         messagesDisplay.appendChild(newMessage);
       });
       if (!nickname) {

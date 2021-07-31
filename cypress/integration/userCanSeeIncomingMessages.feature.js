@@ -1,15 +1,16 @@
 import { createServer } from "../support/wsServer";
 
 describe("WebSockets Chat UI", () => {
-  let wsServer = createServer("wss://3201a21afc10.ngrok.io");
+  let wsServer = createServer("wss://9af4375c1960.ngrok.io");
   before(() => {
     cy.visitWithWsStub('/')
     cy.get("#nick-input").type("User 1");
     cy.get("#set-nick").click();
   });
+  
   describe("on connection to WS server/source", () => {
     it("is expected to display connection message", () => {
-      cy.get("body").should("contain.text", "Connection message");
+      cy.get("body").should("contain.text", "Connected to fake server");
     });
   });
 
@@ -23,7 +24,7 @@ describe("WebSockets Chat UI", () => {
     });
   });
 
-  describe("on ending a essege, the chat UI", () => {
+  describe("on sending a messege, the chat UI", () => {
     it("is expected to display the message that was just sent", () => {
       cy.get("#chat-input").type("Hello Mars");
       cy.get("#send-chat").click();

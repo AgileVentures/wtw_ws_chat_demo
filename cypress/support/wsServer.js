@@ -5,7 +5,7 @@ const createServer = (url) => {
     const mockServer = new Server(url);
     // Here we want to define on event actions
     mockServer.on("connection", (connection) => {
-      connection.send("Connection message");
+      connection.send("Connected to fake server");
       connection.on("message", (message) => {
         message = JSON.parse(message);
         connection.send(JSON.stringify(message));
