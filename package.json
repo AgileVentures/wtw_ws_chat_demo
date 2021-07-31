@@ -11,6 +11,8 @@
     "start:client": "superstatic client --port 3000"
   },
   "devDependencies": {
+    "cypress": "^8.1.0",
+    "mock-socket": "^9.0.3",
     "nodemon": "^2.0.12",
     "superstatic": "^7.1.0"
   }
