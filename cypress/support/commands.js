@@ -22,4 +22,18 @@
 //
 //
 // -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+Cypress.Commands.add("visitWithWsStub", (path) => {
+  cy.visit(path, {
+    onBeforeLoad(win) {
+      cy.stub(win, "WebSocket", (url) => new WebSocket(url));
+    },
+  });
+});
+
+Cypress.Commands.add("incommingMessage", (wsServer, message) => {
+  cy.wrap(wsServer).then((connection) => {
+    message =
+      message.constructor.name === "Object" ? JSON.stringify(message) : message;
+    connection.send(message);
+  });
+});
